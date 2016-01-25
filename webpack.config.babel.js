@@ -5,7 +5,8 @@ import webpack from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-let BUNDLE_DEST = path.join(__dirname, 'dist');
+let PROJ_ROOT = __dirname;
+let BUNDLE_DEST = path.join(PROJ_ROOT, 'dist');
 let LIB_DEST = 'lib';
 
 let NODE_DEPENDENCIES = [
@@ -31,14 +32,26 @@ export default {
     devtool: 'source-map',
     debug: true,
     resolve: {
-        extensions: ['', '.ts', '.js', '.html', 'scss', 'css']
+        extensions: ['', '.ts', '.js', '.html', '.scss', '.css', '.style']
     },
     
     module: {
         loaders: [
             { test: /\.ts$/, loader: 'babel-loader!ts-loader' },
             { test: /\.html$/, loader: 'raw-loader' },
-            { test: /\.scss$/, loaders: ['raw-loader', 'sass-loader'] }
+            { 
+                test: /\.scss$/, 
+                loaders: ['raw-loader', 'sass-loader'],
+                include: [ path.resolve(PROJ_ROOT, 'src', 'app') ]
+            },
+            { 
+                test: /\.scss$/, 
+                loaders: ['style-loader', 'css-loader', 'sass-loader'], 
+                include: [
+                    path.resolve(PROJ_ROOT, 'src', 'bootstrap.ts'),
+                    path.resolve(PROJ_ROOT, 'src', 'assets', 'scss')
+                ] 
+            }
         ]
     },
     
