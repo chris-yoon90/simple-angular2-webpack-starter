@@ -10,8 +10,8 @@ let BUNDLE_DEST = path.join(PROJ_ROOT, 'dist');
 let LIB_DEST = 'lib';
 
 let NODE_DEPENDENCIES = [
-    { from: './node_modules/es6-shim/es6-shim.min.js', to: `./${LIB_DEST}` },
-    { from: './node_modules/angular2/bundles/angular2-polyfills.min.js', to: `./${LIB_DEST}` }
+    { from: path.join('.', 'node_modules', 'es6-shim', 'es6-shim.min.js'), to: path.join('.', LIB_DEST) },
+    { from: path.join('.', 'node_modules', 'angular2', 'bundles', 'angular2-polyfills.min.js'), to: path.join('.', LIB_DEST) }
 ];
 let META_DATA = {
     title: 'Angular2 App',
@@ -64,8 +64,9 @@ export default {
             title: META_DATA.title,
             template: './src/index.html',
             node_dependencies: NODE_DEPENDENCIES.map(function(d) {
-                let fileName = d.from.split('/').pop();
-                return path.join(LIB_DEST, fileName);
+                let pathObject = path.parse(d.from);
+                let fileName = pathObject.base;
+                return `${LIB_DEST}/${fileName}`;
                 })
             })
     ],
