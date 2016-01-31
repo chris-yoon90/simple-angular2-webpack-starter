@@ -58,7 +58,12 @@ export default {
     plugins: [
         new CopyWebpackPlugin(
             [{ from: './src/assets', to: './assets' }]
-                .concat(NODE_DEPENDENCIES)
+                .concat(NODE_DEPENDENCIES),
+            {
+                ignore: [
+                    '*.scss'
+                ]        
+            }
         ),
         new HtmlWebpackPlugin({
             title: META_DATA.title,
